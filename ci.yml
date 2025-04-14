@@ -1,0 +1,28 @@
+schemaVersion: v0.2
+prepare:
+  steps:
+    - name: Install Go
+      command: " nix-env -iA  nixpkgs.go"
+test:
+  steps: []
+run:
+  web:
+    steps:
+      - name: Run server
+        command: go run .
+    plan: 20
+    replicas: 1
+    isPublic: true
+    network:
+      path: /
+      stripPath: false
+  test:
+    steps:
+      - name: Run test
+        command: cd test && go run .
+    plan: 20
+    replicas: 1
+    isPublic: true
+    network:
+      path: /test
+      stripPath: true
